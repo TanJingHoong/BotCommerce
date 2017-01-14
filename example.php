@@ -1,5 +1,4 @@
 <?php
-
 //Useful Resources
 /* Setup - http://localhost/windows_curl.php?curlcall=12345
    Persistent Menu & Get Started - http://localhost/simplebot.php?chatbotsetup=12345
@@ -41,7 +40,7 @@ function sql_error_handler($params) {
 
 global $apiurl, $graphapiurl, $page_access_token;
 
-$page_access_token="EAAbcqcWknhcBAOfdINP20m3LLFVEEBd5bIsSWbCICDgTyIMKT15SDgrqDHiQbjZCDWVvnqH1IMkA6tKBv3gtAVEPhZACLW7VTd1ZCMQNLiBSwQfHUWoGOR7juZBNpK3rg6hb217HxLpuxdY9XNNw6IjDjpkuMMxm3EJso0Kb1AZDZD";
+$page_access_token="EAADZACcr49wQBAJfdzBBlvlOQa9Wlh3jtJZCKXyeOF0Gmw7ACAku5ZBtZAGus0Xu9KYEdGhdKBsNGfRNqtbWhiKlNKHBZCTChLcjEZBiIx8qU9FH756OweqFWAhlZCcZB9UBHUsC7abvecrPEviZBBanyLBDxDrAsxmqZByJ1RYHlArQZDZD";
 
 $apiurl = "https://graph.facebook.com/v2.6/me/messages?access_token=$page_access_token";
 
@@ -281,14 +280,41 @@ if(count($profiledata) == 0)
 $cmdtext = strtolower($cmdtext);
     
 if($cmdtext == "hi"){
-    send_text_message($senderid, "Hi ".$profiledata["last_name"]."! ");  
-}      
-elseif($cmdtext == "name?"){
-    send_text_message($senderid, "My name is Chatbot!");    
+    send_text_message($senderid, "Hi ".$profiledata["first_name"]."! ");  
 }
 elseif($cmdtext == "send quickreplytext"){
     sendtemplate_quickreplytext($senderid);
 }   
+elseif($cmdtext == "send quickreplyimage"){
+    sendtemplate_quickreplyimage($senderid);
+}  
+elseif($cmdtext == "send quickreplytemplate"){
+    sendtemplate_quickreplytemplate($senderid);
+}      
+elseif($cmdtext == "send button template"){
+    sendtemplate_btn($senderid);
+} 
+elseif($cmdtext == "send generic template"){
+    sendtemplate_generic($senderid);
+} 
+elseif($cmdtext == "send templated carousel"){
+    sendtemplate_carousel($senderid);
+}       
+elseif($cmdtext == "send image"){
+    sendfile_tofb($senderid, "image", "https://aa5bd365.ngrok.io/files/sampleimage.gif");   
+} 
+elseif($cmdtext == "send audio"){
+    sendfile_tofb($senderid, "audio", "https://aa5bd365.ngrok.io/files/sampleaudio.mp3");   
+} 
+elseif($cmdtext == "send video"){
+    sendfile_tofb($senderid, "video", "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4");   
+} 
+elseif($cmdtext == "send receipt"){
+    sendfile_tofb($senderid, "file", "https://aa5bd365.ngrok.io/files/payment-receipt.pdf");   
+}     
+elseif($cmdtext == "name?"){
+    send_text_message($senderid, "My name is Chatbot!");    
+}
 else{
     send_text_message($senderid, "Hmm.. Still learning: ".$cmdtext);
 }  
@@ -319,7 +345,6 @@ return $jresult;
 
 
 
-
 //Response to image
 //#########################################
 
@@ -346,7 +371,6 @@ else{
 
 
 
-
 //Response to audio/video/file
 //#####################################
 
@@ -367,7 +391,6 @@ send_text_message($senderid, "Processing your Order details from this file.");
 
 //Response to audio/video/file
 //#####################################
-
 
 
 
@@ -410,9 +433,9 @@ if(count($profiledata) == 0)
     }
 }
 
-
-send_text_message($senderid, "Ok ".$profiledata["first_name"]."! \r\n".$replytext.': '.$cmdtext);  
-    
+if($cmdtext = "Show_Products"){
+    sendtemplate_carousel($senderid);
+}    
     
 }
 
@@ -443,8 +466,67 @@ else{fwrite($fp,print_r($res, true)); fclose($fp);}
 
 
 
+//Response to Carousel
+//#########################################
+
+function sendtemplate_carousel($senderid)
+{
+global $apiurl, $graphapiurl, $page_access_token;
+
+$reply[] = array("content_type" => "text", "title"=> "CheckOut", "payload" => "Bot_Order_Cancel");
+$reply[] = array("content_type" => "text", "title"=> "View Cart", "payload" => "Bot_Order_StartOver");
+
+    
+$buttons1[] = array("type" => "postback", "title"=> "Add To Cart", "payload" => "Add_To_Cart_Product1");
+$buttons1[] = array("type" => "postback", "title"=> "Product Details", "payload" => "Bot_Order_Save_32");
+$buttons1[] = array("type" => "phone_number", "title"=> "Contact Seller", "payload" => "+60166260287");
+
+$buttons2[] = array("type" => "postback", "title"=> "Add To Cart", "payload" => "Add_To_Cart_Product2");
+$buttons2[] = array("type" => "postback", "title"=> "Product Details", "payload" => "Bot_Order_Save_32");
+$buttons2[] = array("type" => "phone_number", "title"=> "Contact Seller", "payload" => "+60166260287");
+
+$buttons3[] = array("type" => "postback", "title"=> "Add To Cart", "payload" => "Add_To_Cart_Product3");
+$buttons3[] = array("type" => "postback", "title"=> "Product Details", "payload" => "Bot_Order_Save_32");
+$buttons3[] = array("type" => "phone_number", "title"=> "Contact Seller", "payload" => "+60166260287");
+
+$buttons4[] = array("type" => "postback", "title"=> "Add To Cart", "payload" => "Add_To_Cart_Product4");
+$buttons4[] = array("type" => "postback", "title"=> "Product Details", "payload" => "Bot_Order_Save_32");
+$buttons4[] = array("type" => "phone_number", "title"=> "Contact Seller", "payload" => "+60166260287");
+
+
+$elements[] = array("title" => "Classic Tristana - FREE", "subtitle"=> "The ugliest but classic tristana!", 
+                    "image_url" => " https://9abb7c6a.ngrok.io/tutorial/files/i1.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons1);    
+$elements[] = array("title" => "Bucaneer Tristana - RM 25", "subtitle"=> "Tristana with canon , who will not love it ?", 
+                    "image_url" => " https://9abb7c6a.ngrok.io/tutorial/files/i2.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons2);    
+$elements[] = array("title" => "Guerilla Tristana - RM 15", "subtitle"=> "Weirdy weird tristana skin , yucks !", 
+                    "image_url" => " https://9abb7c6a.ngrok.io/tutorial/files/i3.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons3);    
+$elements[] = array("title" => "Riot Girl Tristana - RM 10", "subtitle"=> "Not much difference from the classic one, but it's a fking female !", 
+                    "image_url" => " https://9abb7c6a.ngrok.io/tutorial/files/i4.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons4);    
+                
+$sendmsg = new stdClass();
+$sendmsg->recipient->id = $senderid;
+$sendmsg->message->attachment->type = 'template';
+$sendmsg->message->attachment->payload->template_type = 'generic';
+$sendmsg->message->attachment->payload->elements = $elements;  
+$sendmsg->message->quick_replies = $reply;    
+
+
+$res = send_curl_data_tofb($sendmsg);
+    
+$fp = fopen("logfbdata.txt","a");
+if( $fp == false ){ echo "file creation failed";}
+else{fwrite($fp,print_r($res, true)); fclose($fp);}
+}
+
+//Response to Carousel
+//#########################################
+
+
+
+
 //Response to get started 
 //#########################################
+
 function fn_command_processpostback($senderid, $cmdtext)
 {
 global $apiurl, $graphapiurl, $page_access_token, $profiledata;
@@ -463,28 +545,29 @@ if(count($profiledata) == 0)
 }
     
 if($cmdtext == "Get Started!"){
-    send_text_message($senderid, "Hi ".$profiledata["first_name"]."!, How can i help you today?");    
-}
+    send_text_message($senderid, "Hi ".$profiledata["first_name"]."! I am botbot , I am here to show you how can you sell products in a chat !");
+    sendtemplate_quickreplytext($senderid);    
+}   
 elseif($cmdtext == "Start_Again"){
-    send_text_message($senderid, "Hi , working in progress");    
+    send_text_message($senderid, "Hi ".$profiledata["first_name"]."! I am botbot , I am here to show you how can you sell products in a chat !");
+    sendtemplate_quickreplytext($senderid);  
 }
+elseif($cmdtext == "Bot_Help"){
+    send_text_message($senderid, "These are the available commands for Help");    
+} 
+elseif($cmdtext == "Bot_Orders"){
+    send_text_message($senderid, "These are Your previous orders");    
+} 
+elseif($cmdtext == "Bot_Cart"){
+    send_text_message($senderid, "These are the items in your cart.");    
+}     
 else{
     send_text_message($senderid, "Ok. Got it: ".$cmdtext);
 } 
     
 }
+
 //Response to get started 
-//#########################################
-
-
-
-
-//Json Send Quick Reply Procedure
-//#########################################
-
-
-
-//Json Send Quick Reply Procedure
 //#########################################
 
 

@@ -1,4 +1,5 @@
 <?php
+
 //Useful Resources
 /* Setup - http://localhost/windows_curl.php?curlcall=12345
    Persistent Menu & Get Started - http://localhost/simplebot.php?chatbotsetup=12345
@@ -40,7 +41,7 @@ function sql_error_handler($params) {
 
 global $apiurl, $graphapiurl, $page_access_token;
 
-$page_access_token="EAADZACcr49wQBAJfdzBBlvlOQa9Wlh3jtJZCKXyeOF0Gmw7ACAku5ZBtZAGus0Xu9KYEdGhdKBsNGfRNqtbWhiKlNKHBZCTChLcjEZBiIx8qU9FH756OweqFWAhlZCcZB9UBHUsC7abvecrPEviZBBanyLBDxDrAsxmqZByJ1RYHlArQZDZD";
+$page_access_token="EAAbcqcWknhcBAOfdINP20m3LLFVEEBd5bIsSWbCICDgTyIMKT15SDgrqDHiQbjZCDWVvnqH1IMkA6tKBv3gtAVEPhZACLW7VTd1ZCMQNLiBSwQfHUWoGOR7juZBNpK3rg6hb217HxLpuxdY9XNNw6IjDjpkuMMxm3EJso0Kb1AZDZD";
 
 $apiurl = "https://graph.facebook.com/v2.6/me/messages?access_token=$page_access_token";
 
@@ -280,41 +281,17 @@ if(count($profiledata) == 0)
 $cmdtext = strtolower($cmdtext);
     
 if($cmdtext == "hi"){
-    send_text_message($senderid, "Hi ".$profiledata["first_name"]."! ");  
-}
-elseif($cmdtext == "send quickreplytext"){
-    sendtemplate_quickreplytext($senderid);
-}   
-elseif($cmdtext == "send quickreplyimage"){
-    sendtemplate_quickreplyimage($senderid);
-}  
-elseif($cmdtext == "send quickreplytemplate"){
-    sendtemplate_quickreplytemplate($senderid);
+    send_text_message($senderid, "Hi ".$profiledata["last_name"]."! ");  
 }      
-elseif($cmdtext == "send button template"){
-    sendtemplate_btn($senderid);
-} 
-elseif($cmdtext == "send generic template"){
-    sendtemplate_generic($senderid);
-} 
-elseif($cmdtext == "send templated carousel"){
-    sendtemplate_carousel($senderid);
-}       
-elseif($cmdtext == "send image"){
-    sendfile_tofb($senderid, "image", "https://aa5bd365.ngrok.io/files/sampleimage.gif");   
-} 
-elseif($cmdtext == "send audio"){
-    sendfile_tofb($senderid, "audio", "https://aa5bd365.ngrok.io/files/sampleaudio.mp3");   
-} 
-elseif($cmdtext == "send video"){
-    sendfile_tofb($senderid, "video", "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4");   
-} 
-elseif($cmdtext == "send receipt"){
-    sendfile_tofb($senderid, "file", "https://aa5bd365.ngrok.io/files/payment-receipt.pdf");   
-}     
 elseif($cmdtext == "name?"){
     send_text_message($senderid, "My name is Chatbot!");    
 }
+elseif($cmdtext == "send quickreplytext"){
+    sendtemplate_quickreplytext($senderid);
+}
+elseif($cmdtext == "send templated carousel"){
+    sendtemplate_carousel($senderid);
+}       
 else{
     send_text_message($senderid, "Hmm.. Still learning: ".$cmdtext);
 }  
@@ -345,6 +322,7 @@ return $jresult;
 
 
 
+
 //Response to image
 //#########################################
 
@@ -371,6 +349,7 @@ else{
 
 
 
+
 //Response to audio/video/file
 //#####################################
 
@@ -391,6 +370,7 @@ send_text_message($senderid, "Processing your Order details from this file.");
 
 //Response to audio/video/file
 //#####################################
+
 
 
 
@@ -433,9 +413,9 @@ if(count($profiledata) == 0)
     }
 }
 
-if($cmdtext = "Show_Products"){
-    sendtemplate_carousel($senderid);
-}    
+
+sendtemplate_carousel($senderid);  
+    
     
 }
 
@@ -494,16 +474,15 @@ $buttons4[] = array("type" => "postback", "title"=> "Product Details", "payload"
 $buttons4[] = array("type" => "phone_number", "title"=> "Contact Seller", "payload" => "+60166260287");
 
 
-$elements[0] = array("title" => "Classic Tristana - FREE", "subtitle"=> "The ugliest but classic tristana!", 
-                    "image_url" => " https://9815c768.ngrok.io/tutorial/files/i1.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons1);    
-$elements[1] = array("title" => "Bucaneer Tristana - RM 25", "subtitle"=> "Tristana with canon , who will not love it ?", 
-                    "image_url" => " https://9815c768.ngrok.io/tutorial/files/i2.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons2);    
-$elements[2] = array("title" => "Guerilla Tristana - RM 15", "subtitle"=> "Weirdy weird tristana skin , yucks !", 
-                    "image_url" => " https://9815c768.ngrok.io/tutorial/files/i3.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons3);    
-$elements[3] = array("title" => "Riot Girl Tristana - RM 10", "subtitle"=> "Not much difference from the classic one, but it's a fking female !", 
-                    "image_url" => " https://9815c768.ngrok.io/tutorial/files/i4.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons4);    
-
-
+$elements[] = array("title" => "Classic Tristana - FREE", "subtitle"=> "The ugliest but classic tristana!", 
+                    "image_url" => "https://d16205d2.ngrok.io/tutorial/files/i1.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons1);    
+$elements[] = array("title" => "Bucaneer Tristana - RM 25", "subtitle"=> "Tristana with canon , who will not love it ?", 
+                    "image_url" => "https://d16205d2.ngrok.io/tutorial/files/i2.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons2);    
+$elements[] = array("title" => "Guerilla Tristana - RM 15", "subtitle"=> "Weirdy weird tristana skin , yucks !", 
+                    "image_url" => "https://d16205d2.ngrok.io/tutorial/files/i3.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons3);    
+$elements[] = array("title" => "Riot Girl Tristana - RM 10", "subtitle"=> "Not much difference from the classic one, but it's a fking female !", 
+                    "image_url" => "https://d16205d2.ngrok.io/tutorial/files/i4.jpg", "item_url" => "http://BotAhead.com/", 'buttons' => $buttons4);    
+                
 $sendmsg = new stdClass();
 $sendmsg->recipient->id = $senderid;
 $sendmsg->message->attachment->type = 'template';
@@ -527,10 +506,9 @@ else{fwrite($fp,print_r($res, true)); fclose($fp);}
 
 //Response to get started 
 //#########################################
-
 function fn_command_processpostback($senderid, $cmdtext)
 {
-global $apiurl, $graphapiurl, $page_access_token, $profiledata;
+global $apiurl, $graphapiurl, $page_access_token, $profiledata,$cart;
 
 if(count($profiledata) == 0)
 {    
@@ -548,38 +526,36 @@ if(count($profiledata) == 0)
 if($cmdtext == "Get Started!"){
     send_text_message($senderid, "Hi ".$profiledata["first_name"]."! I am botbot , I am here to show you how can you sell products in a chat !");
     sendtemplate_quickreplytext($senderid);    
-}   
+}
 elseif($cmdtext == "Start_Again"){
     send_text_message($senderid, "Hi ".$profiledata["first_name"]."! I am botbot , I am here to show you how can you sell products in a chat !");
     sendtemplate_quickreplytext($senderid);  
 }
 elseif($cmdtext == "Add_To_Cart_Product1"){
-    send_text_message($senderid, "These are the available commands for Help");    
+    $cart[0] = $cmdtext;
+    send_text_message($senderid, $cart[0] ."Product1 has been successfully added to cart");
+    sendtemplate_carousel($senderid);
 }
 elseif($cmdtext == "Add_To_Cart_Product2"){
-    send_text_message($senderid, "These are the available commands for Help");    
+    $cart[1] = $cmdtext;
+    send_text_message($senderid, $cart[1] . "Product2 has been successfully added to cart");
+    sendtemplate_carousel($senderid);
 }
 elseif($cmdtext == "Add_To_Cart_Product3"){
-    send_text_message($senderid, "These are the available commands for Help");    
+    $cart[2] = $cmdtext;
+    send_text_message($senderid, $cart[2] ."Product3 has been successfully added to cart");
+    sendtemplate_carousel($senderid);
 }
 elseif($cmdtext == "Add_To_Cart_Product4"){
-    send_text_message($senderid, "These are the available commands for Help");    
+    $cart[3] = $cmdtext;
+    send_text_message($senderid, $cart[3] . "Product4 has been successfully added to cart");
+    sendtemplate_carousel($senderid);
 }
-elseif($cmdtext == "Bot_Help"){
-    send_text_message($senderid, "These are the available commands for Help");    
-} 
-elseif($cmdtext == "Bot_Orders"){
-    send_text_message($senderid, "These are Your previous orders");    
-} 
-elseif($cmdtext == "Bot_Cart"){
-    send_text_message($senderid, "These are the items in your cart.");    
-}     
 else{
     send_text_message($senderid, "Ok. Got it: ".$cmdtext);
 } 
     
 }
-
 //Response to get started 
 //#########################################
 
